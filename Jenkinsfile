@@ -161,6 +161,10 @@ pipeline {
                     params.account == 'dev' //&& env.BRANCH_NAME == 'myBranch'
                 }
             }
+            environment {
+                        kube_config  = "${params.account}" + '-kube-config'
+                        account_name = "${params.account}"
+                    }
 
             steps {
                 script {
