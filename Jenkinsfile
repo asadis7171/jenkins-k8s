@@ -46,12 +46,12 @@ pipeline {
                 }
             }
 
-            post {
+            /*post {
                 always {
                     sh 'echo Cleaning docker Images from Jenkins.'
                     sh "docker rmi ${env.dev_image}"
                 }
-            }
+            }*/
         }
 
         stage('Pull Tag push to QA') {
@@ -79,13 +79,13 @@ pipeline {
                 }
             }
 
-            post {
+           /* post {
                 always {
                     sh 'echo Cleaning docker Images from Jenkins.'
                     sh "docker rmi ${env.dev_image}"
                     sh "docker rmi ${env.qa_image}"
                 }
-            }
+            }*/
         }
 
         stage('Pull Tag push to stage') {
@@ -112,13 +112,13 @@ pipeline {
                 }
             }
 
-            post {
+          /*  post {
                 always {
                     sh 'echo Cleaning docker Images from Jenkins.'
                     sh "docker rmi ${env.qa_image}"
                     sh "docker rmi ${env.stage_image}"
                 }
-            }
+            } */
         }
 
         stage('Pull Tag push to Prod') {
@@ -146,13 +146,13 @@ pipeline {
                 }
             }
 
-            post {
+            /*post {
                 always {
                     sh 'echo Cleaning docker Images from Jenkins.'
                     sh "docker rmi ${env.stage_image}"
                     sh "docker rmi ${env.prod_image}"
                 }
-            }
+            }*/
         }
 
         stage('Deploy to Dev K8S cluster ') {
