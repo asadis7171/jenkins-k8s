@@ -7,11 +7,11 @@ pipeline {
     }
 
     environment {
-        COMMITID            = "${params.commit_id}"
+        COMMITID            = "${GIT_COMMIT}"
         dev_dh_creds        = 'docker-cred'
         dev_registry        = 'asadis7171/dev'
         dev_registry_endpoint = 'https://' + "${env.registryURI}" + "${env.dev_registry}"
-        dev_image           = "${env.dev_registry}" + ":$GIT_COMMIT"
+        dev_image           = "${env.dev_registry}" + ":" + "${env.COMMITID}"
         prod_dh_creds       = 'dh_cred_prod'
         prod_image          = "${env.registryURI}" + "${env.prod_registry}" + ':' + "${env.COMMITID}"
         prod_registry       = 'asadis7171/prod'
