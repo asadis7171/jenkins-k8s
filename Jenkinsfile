@@ -193,7 +193,7 @@ pipeline {
 
             steps {
                 script {
-                    echo 'Deploying on Dev K8S Cluster.'
+                    echo 'Deploying on QA K8S Cluster.'
                     withKubeConfig(credentialsId: "${env.account}-kube-config", restrictKubeConfigAccess: true) {
                         sh "sed -i -e 's/{{ACCOUNT}}/${env.account_name}/g' -e 's/{{COMMITID}}/${GIT_COMMIT}/g' KUBE/deployment.yaml"
                         sh 'echo deployment.yaml file after replace with sed'
@@ -218,7 +218,7 @@ pipeline {
 
             steps {
                 script {
-                    echo 'Deploying on Dev K8S Cluster.'
+                    echo 'Deploying on Stage K8S Cluster.'
                     withKubeConfig(credentialsId: "${env.account}-kube-config", restrictKubeConfigAccess: true) {
                         sh "sed -i -e 's/{{ACCOUNT}}/${env.account_name}/g' -e 's/{{COMMITID}}/${GIT_COMMIT}/g' KUBE/deployment.yaml"
                         sh 'echo deployment.yaml file after replace with sed'
@@ -230,7 +230,7 @@ pipeline {
             }
         }
 
-        stage('Deploy to QA K8S cluster ') {
+        stage('Deploy to Prod K8S cluster ') {
             when {
                 expression {
                     params.account == 'prod' //&& env.BRANCH_NAME == 'myBranch'
@@ -243,7 +243,7 @@ pipeline {
 
             steps {
                 script {
-                    echo 'Deploying on Dev K8S Cluster.'
+                    echo 'Deploying on Prod K8S Cluster.'
                     withKubeConfig(credentialsId: "${env.account}-kube-config", restrictKubeConfigAccess: true) {
                         sh "sed -i -e 's/{{ACCOUNT}}/${env.account_name}/g' -e 's/{{COMMITID}}/${GIT_COMMIT}/g' KUBE/deployment.yaml"
                         sh 'echo deployment.yaml file after replace with sed'
