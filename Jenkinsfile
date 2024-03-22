@@ -3,7 +3,7 @@ pipeline {
 
     parameters {
         choice(name: 'account', choices: ['dev', 'qa', 'stage', 'prod'], description: 'Select the environment.')
-        //string(name: 'commit_id', defaultValue: 'latest', description: 'provide commit id.')
+        string(name: 'commit_id', defaultValue: 'latest', description: 'provide commit id.')
     }
 
     environment {
