@@ -179,7 +179,84 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy to QA K8S cluster ') {
+            when {
+                expression {
+                    params.account == 'qa' //&& env.BRANCH_NAME == 'myBranch'
+                }
+            }
+            environment {
+                        kube_config  = "${params.account}" + '-kube-config'
+                        account_name = "${params.account}"
+                    }
+
+            steps {
+                script {
+                    echo 'Deploying on Dev K8S Cluster.'
+                    withKubeConfig(credentialsId: "${env.account}-kube-config", restrictKubeConfigAccess: true) {
+                        sh "sed -i -e 's/{{ACCOUNT}}/${env.account_name}/g' -e 's/{{COMMITID}}/${GIT_COMMIT}/g' KUBE/deployment.yaml"
+                        sh 'echo deployment.yaml file after replace with sed'
+                        sh 'cat KUBE/deployment.yaml'
+                        sh 'kubectl apply -f KUBE/deployment.yaml'
+                        sh 'kubectl apply -f KUBE/service.yaml'
+                    }
+                }
+            }
+        }
+
+        stage('Deploy to STAGE K8S cluster ') {
+            when {
+                expression {
+                    params.account == 'stage' //&& env.BRANCH_NAME == 'myBranch'
+                }
+            }
+            environment {
+                        kube_config  = "${params.account}" + '-kube-config'
+                        account_name = "${params.account}"
+                    }
+
+            steps {
+                script {
+                    echo 'Deploying on Dev K8S Cluster.'
+                    withKubeConfig(credentialsId: "${env.account}-kube-config", restrictKubeConfigAccess: true) {
+                        sh "sed -i -e 's/{{ACCOUNT}}/${env.account_name}/g' -e 's/{{COMMITID}}/${GIT_COMMIT}/g' KUBE/deployment.yaml"
+                        sh 'echo deployment.yaml file after replace with sed'
+                        sh 'cat KUBE/deployment.yaml'
+                        sh 'kubectl apply -f KUBE/deployment.yaml'
+                        sh 'kubectl apply -f KUBE/service.yaml'
+                    }
+                }
+            }
+        }
+
+        stage('Deploy to QA K8S cluster ') {
+            when {
+                expression {
+                    params.account == 'prod' //&& env.BRANCH_NAME == 'myBranch'
+                }
+            }
+            environment {
+                        kube_config  = "${params.account}" + '-kube-config'
+                        account_name = "${params.account}"
+                    }
+
+            steps {
+                script {
+                    echo 'Deploying on Dev K8S Cluster.'
+                    withKubeConfig(credentialsId: "${env.account}-kube-config", restrictKubeConfigAccess: true) {
+                        sh "sed -i -e 's/{{ACCOUNT}}/${env.account_name}/g' -e 's/{{COMMITID}}/${GIT_COMMIT}/g' KUBE/deployment.yaml"
+                        sh 'echo deployment.yaml file after replace with sed'
+                        sh 'cat KUBE/deployment.yaml'
+                        sh 'kubectl apply -f KUBE/deployment.yaml'
+                        sh 'kubectl apply -f KUBE/service.yaml'
+                    }
+                }
+            }
+        }
     }
+
+
 
     post {
         always {
